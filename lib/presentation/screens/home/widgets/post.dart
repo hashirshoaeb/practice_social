@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:practice_social/domain/models/post.dart';
+import 'package:practice_social/presentation/screens/post/post_detail_screen.dart';
 
 class Post extends StatefulWidget {
   const Post({super.key, required this.post});
@@ -18,7 +19,10 @@ class _PostState extends State<Post> {
       fit: StackFit.expand,
       children: [
         // Background Image
-        Image.network(widget.post.imageUrl, fit: BoxFit.cover),
+        Hero(
+          tag: 'POST_IMAGE_${widget.post.id}',
+          child: Image.network(widget.post.imageUrl, fit: BoxFit.cover),
+        ),
         // Post Content Overlay
         PostContentOverlay(post: widget.post),
         // Right side interaction buttons
@@ -45,23 +49,36 @@ class PostContentOverlay extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Username
-              Text(
-                post.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+              Hero(
+                tag: 'POST_TITLE_${post.id}',
+                child: Text(
+                  post.title,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(height: 6),
 
               // Caption
-              Text(
-                post.content,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostDetailScreen(post: post),
+                    ),
+                  );
+                },
+                child: Text(
+                  post.content,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               // Hashtag
@@ -181,15 +198,22 @@ class InteractionOverlay extends StatelessWidget {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey,
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.person, color: Colors.white, size: 30),
+                  Hero(
+                    tag: 'POST_USER_${post.id}',
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
                     ),
                   ),
                   Positioned(
