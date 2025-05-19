@@ -4,6 +4,7 @@ import 'package:practice_social/domain/models/post.dart';
 import 'package:practice_social/domain/post_repository.dart';
 import 'package:practice_social/presentation/screens/home/widgets/bottom_navbar.dart';
 import 'package:practice_social/presentation/screens/home/widgets/post.dart';
+import 'package:practice_social/presentation/shared_widgets/extent_page_view.dart';
 import 'widgets/appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -77,7 +78,10 @@ class _FollowingTabState extends State<FollowingTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return PageView.builder(
+    return ExtentsPageView.extents(
+      physics: const PageScrollPhysics(),
+      extents: 1,
+      onPageChanged: (index) {},
       itemCount: posts.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
