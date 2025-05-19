@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:practice_social/domain/models/post.dart';
+import 'package:practice_social/domain/post_repository.dart';
 import 'package:practice_social/presentation/screens/home/widgets/bottom_navbar.dart';
+import 'package:practice_social/presentation/screens/home/widgets/post.dart';
 import 'widgets/appbar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -20,9 +23,6 @@ class _HomeScreenState extends State<HomeScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  // @override
-  // bool get wantKeepAlive => true;
-
   @override
   void dispose() {
     _tabController.dispose();
@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -59,6 +58,19 @@ class FollowingTab extends StatefulWidget {
 
 class _FollowingTabState extends State<FollowingTab>
     with AutomaticKeepAliveClientMixin {
+  final postRepository = PostRepository();
+  List<PostModel> posts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    postRepository.getPosts().then((value) {
+      setState(() {
+        posts = value;
+      });
+    });
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -66,10 +78,10 @@ class _FollowingTabState extends State<FollowingTab>
   Widget build(BuildContext context) {
     super.build(context);
     return PageView.builder(
+      itemCount: posts.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        final color = Colors.primaries[index % Colors.primaries.length];
-        return SafeArea(child: Container(color: color));
+        return Post(key: Key(posts[index].id), post: posts[index]);
       },
     );
   }
