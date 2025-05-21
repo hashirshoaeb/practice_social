@@ -129,7 +129,8 @@ class _FollowingTabState extends State<FollowingTab>
                 >(
                   builder: (context, state) {
                     final shouldScrollUpAbsorb = !state.isStoryWidgetVisible;
-                    final shouldScrollDownAbsorb = !state.isFirstPage;
+                    final shouldScrollDownAbsorb =
+                        !state.isFirstPage && !state.isStoryWidgetVisible;
                     return ScrollUpGestureDetector(
                       onScrollUpAbsorb: shouldScrollUpAbsorb,
                       onScrollUp: () {
