@@ -95,10 +95,10 @@ class _StoryItemState extends State<_StoryItem>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 5),
     );
     base = CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
-    gap = Tween<double>(begin: 20, end: 0.0).animate(base);
+    gap = Tween<double>(begin: 0, end: 18 * 2).animate(base);
   }
 
   @override
@@ -115,7 +115,7 @@ class _StoryItemState extends State<_StoryItem>
           isLoading = true;
         });
         _animationController.repeat();
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 5));
         _animationController.stop();
         _animationController.reset();
         setState(() {
@@ -236,7 +236,7 @@ class _StoryItemState extends State<_StoryItem>
               animation: _animationController.value,
               gradientColors: gradientColors,
               gapSize: gap.value,
-              dashes: 20,
+              dashes: 18,
             ),
           ),
         );
@@ -257,9 +257,24 @@ class StoryLoaderPainter extends CustomPainter {
     required this.dashes,
   });
 
+  double getYValue(double x) {
+    if (x < 0 || x > 18) {
+      throw ArgumentError('x must be between 0 and 18');
+    }
+
+    if (x <= 8) {
+      // Ease-in curve from (0, 0) to (8, 5)
+      double n = 2.5; // Controls the steepness
+      return 5.0 * pow(x / 8.0, n);
+    } else {
+      // Linear decrease from (8, 5) to (18, 0)
+      return ((-5.0 / 10.0) * (x - 8.0)) + 5.0; // slope = -5/10
+    }
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
-    final double gap = pi / 180 * gapSize;
+    // final double gap = pi / 180 * gapSize;
     final double singleAngle = (pi * 2) / dashes;
 
     final Paint paint =
@@ -273,11 +288,15 @@ class StoryLoaderPainter extends CustomPainter {
           ..style = PaintingStyle.stroke;
 
     for (int i = 0; i < dashes; i++) {
-      final gapRemainder = (gap * i) % 7.0;
+      final delayOffest = gapSize - i; // tween - index
+      final posistiveOffset = delayOffest > 0 ? delayOffest : 0;
+      final remainder = posistiveOffset > 18.0 ? 18.0 : posistiveOffset;
+
+      final gapRemainder = getYValue(remainder.toDouble()) * pi / 180;
       canvas.drawArc(
         Offset.zero & size,
         gapRemainder + singleAngle * i,
-        singleAngle - gap * 2,
+        singleAngle - gapRemainder * 2,
         false,
         paint,
       );
