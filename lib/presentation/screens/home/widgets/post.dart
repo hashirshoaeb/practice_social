@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:practice_social/domain/models/post.dart';
 import 'package:practice_social/presentation/screens/post/post_detail_screen.dart';
 
@@ -259,11 +261,12 @@ class InteractionOverlay extends StatelessWidget {
                 onTap: () {},
               ),
               const SizedBox(height: 15),
-              InteractionButton(
-                icon: 'assets/save.svg',
-                text: "34k",
-                onTap: () {},
-              ),
+              // InteractionButton(
+              //   icon: 'assets/save.svg',
+              //   text: "34k",
+              //   onTap: () {},
+              // ),
+              SaveButton(),
               const SizedBox(height: 15),
               Container(
                 width: 40,
@@ -284,6 +287,69 @@ class InteractionOverlay extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class SaveButton extends StatefulWidget {
+  const SaveButton({super.key});
+
+  @override
+  State<SaveButton> createState() => _SaveButtonState();
+}
+
+class _SaveButtonState extends State<SaveButton> with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (_animationController.status == AnimationStatus.completed) {
+          _animationController.reverse();
+        } else {
+          _animationController.forward();
+        }
+        // Heptic feedback
+        HapticFeedback.lightImpact();
+      },
+      child: Column(
+        children: [
+          LottieBuilder.asset(
+            'assets/save.json',
+            height: 60,
+            width: 60,
+            controller: _animationController,
+            animate: false,
+            reverse: false,
+            repeat: false,
+            // colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "34k",
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
