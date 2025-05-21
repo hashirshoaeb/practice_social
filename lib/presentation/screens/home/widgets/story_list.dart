@@ -88,6 +88,7 @@ class _StoryItemState extends State<_StoryItem>
   bool isLoading = false;
   late AnimationController _animationController;
   late Animation<double> base;
+  late Animation<double> reverse;
   late Animation<double> gap;
 
   @override
@@ -99,6 +100,7 @@ class _StoryItemState extends State<_StoryItem>
     );
     base = CurvedAnimation(parent: _animationController, curve: Curves.easeOut);
     gap = Tween<double>(begin: 0, end: 18 * 2).animate(base);
+    reverse = Tween<double>(begin: 0, end: -0.15).animate(base);
   }
 
   @override
@@ -231,12 +233,15 @@ class _StoryItemState extends State<_StoryItem>
         return SizedBox(
           width: size,
           height: size,
-          child: CustomPaint(
-            painter: StoryLoaderPainter(
-              animation: _animationController.value,
-              gradientColors: gradientColors,
-              gapSize: gap.value,
-              dashes: 18,
+          child: RotationTransition(
+            turns: reverse,
+            child: CustomPaint(
+              painter: StoryLoaderPainter(
+                animation: _animationController.value,
+                gradientColors: gradientColors,
+                gapSize: gap.value,
+                dashes: 18,
+              ),
             ),
           ),
         );
