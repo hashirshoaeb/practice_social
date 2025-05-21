@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'presentation/screens/home/home_screen.dart';
 import 'presentation/themes/app_theme.dart';
 
 void main() {
+  debugPrintGestureArenaDiagnostics = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   // Set preferred orientations
