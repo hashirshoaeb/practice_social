@@ -1,57 +1,3 @@
-// class CustomScrollUpGestureRecognizer extends OneSequenceGestureRecognizer {
-//   final VoidCallback onScrollUp;
-//   final bool Function() absorb;
-
-//   CustomScrollUpGestureRecognizer({
-//     required this.onScrollUp,
-//     required this.absorb,
-//   });
-
-//   Offset? _initialPosition;
-//   final double _minScrollDistance =
-//       2.0; // Minimum distance to trigger scroll up
-
-//   @override
-//   String get debugDescription => 'CustomScrollUpGestureRecognizer';
-
-//   @override
-//   void addAllowedPointer(PointerDownEvent event) {
-//     super.addAllowedPointer(event);
-//     _initialPosition = event.position;
-//   }
-
-//   @override
-//   void handleEvent(PointerEvent event) {
-//     if (event is PointerMoveEvent && _initialPosition != null) {
-//       final double dy = _initialPosition!.dy - event.position.dy;
-//       print('dy: $dy');
-//       // If the movement is downward, reject the gesture
-//       if (dy > 0) {
-//         resolve(GestureDisposition.rejected);
-//       }
-//       // Check if the movement is upward and exceeds minimum distance
-//       else if (absorb()) {
-//         resolve(GestureDisposition.rejected);
-//       } else if (dy < 0) {
-//         resolve(GestureDisposition.accepted);
-//       }
-//     }
-
-//     stopTrackingIfPointerNoLongerDown(event);
-//   }
-
-//   @override
-//   void acceptGesture(int pointer) {
-//     onScrollUp();
-//     super.acceptGesture(pointer);
-//   }
-
-//   @override
-//   void didStopTrackingLastPointer(int pointer) {
-//     _initialPosition = null;
-//   }
-// }
-
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
@@ -84,14 +30,14 @@ class ScrollUpGestureDetector extends StatelessWidget {
                 instance
                   ..onScrollUpAbsorb = onScrollUpAbsorb
                   ..onStart = (details) {
-                    print('onStart');
+                    // print('onStart');
                     onScrollUp();
                   }
                   ..onUpdate = (details) {
-                    print('onUpdate');
+                    // print('onUpdate');
                   }
                   ..onEnd = (details) {
-                    print('onEnd');
+                    // print('onEnd');
                   };
               },
             ),
@@ -102,11 +48,14 @@ class ScrollUpGestureDetector extends StatelessWidget {
                 instance
                   ..onScrollDownAbsorb = onScrollDownAbsorb
                   ..onStart = (details) {
-                    print('onStart');
+                    // print('onStart');
                     onScrollDown();
                   }
                   ..onUpdate = (details) {
-                    print('onUpdate');
+                    // print('onUpdate');
+                  }
+                  ..onEnd = (details) {
+                    // print('onEnd');
                   };
               },
             ),

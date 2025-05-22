@@ -6,7 +6,7 @@ class FollowingTabControlState {
   final bool isFirstPage;
 
   const FollowingTabControlState({
-    this.isStoryWidgetVisible = true,
+    this.isStoryWidgetVisible = false,
     this.isFirstPage = true,
   });
 
@@ -44,7 +44,7 @@ class FollowingTabControlCubit extends Cubit<FollowingTabControlState> {
   double get storyWidgetHeight => 228;
 
   FollowingTabControlCubit() : super(FollowingTabControlState()) {
-    scrollController = ScrollController();
+    scrollController = ScrollController(initialScrollOffset: storyWidgetHeight);
     pageController = PageController();
     pageController.addListener(_onPageChange);
   }

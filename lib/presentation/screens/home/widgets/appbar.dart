@@ -36,7 +36,9 @@ class TransparentAppBar extends StatelessWidget {
                   labelPadding: EdgeInsets.zero,
                   // dividerColor: Colors.transparent,
                   dividerHeight: 0,
-                  unselectedLabelColor: Colors.white.withOpacity(0.5),
+                  unselectedLabelColor: Colors.white.withAlpha(
+                    (0.5 * 255).toInt(),
+                  ),
                   labelStyle: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

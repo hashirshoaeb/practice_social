@@ -86,7 +86,7 @@ class _NavItemState extends State<_NavItem>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
+  // bool _isPressed = false;
 
   @override
   void initState() {
@@ -112,16 +112,16 @@ class _NavItemState extends State<_NavItem>
     return GestureDetector(
       onTapDown: (_) {
         _animationController.forward();
-        setState(() => _isPressed = true);
+        // setState(() => _isPressed = true);
       },
       onTapUp: (_) {
         _animationController.reverse();
-        setState(() => _isPressed = false);
+        // setState(() => _isPressed = false);
         widget.onTap();
       },
       onTapCancel: () {
         _animationController.reverse();
-        setState(() => _isPressed = false);
+        // setState(() => _isPressed = false);
       },
       child: Column(
         children: [
@@ -192,7 +192,7 @@ class _AddButtonState extends State<_AddButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
+  // bool _isPressed = false;
 
   @override
   void initState() {
@@ -202,7 +202,7 @@ class _AddButtonState extends State<_AddButton>
       duration: const Duration(milliseconds: 100),
     );
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.85).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.25).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
@@ -218,15 +218,15 @@ class _AddButtonState extends State<_AddButton>
     return GestureDetector(
       onTapDown: (_) {
         _animationController.forward();
-        setState(() => _isPressed = true);
+        // setState(() => _isPressed = true);
       },
       onTapUp: (_) {
         _animationController.reverse();
-        setState(() => _isPressed = false);
+        // setState(() => _isPressed = false);
       },
       onTapCancel: () {
         _animationController.reverse();
-        setState(() => _isPressed = false);
+        // setState(() => _isPressed = false);
       },
       child: Column(
         children: [
