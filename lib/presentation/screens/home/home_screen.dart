@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice_social/domain/post_repository.dart';
 import 'package:practice_social/presentation/cubit/following_tab_control_cubit.dart';
+import 'package:practice_social/presentation/cubit/post_cubit.dart';
 import 'package:practice_social/presentation/screens/home/widgets/bottom_navbar.dart';
 import 'package:practice_social/presentation/screens/home/widgets/following_tab.dart';
 import 'package:practice_social/presentation/screens/home/widgets/for_you_tab.dart';
@@ -38,8 +40,15 @@ class _HomeScreenState extends State<HomeScreen>
             controller: _tabController,
             children: [
               // Following Tab Content
-              BlocProvider(
-                create: (context) => FollowingTabControlCubit(),
+              MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => FollowingTabControlCubit()),
+                  BlocProvider(
+                    create:
+                        (context) =>
+                            PostCubit(postRepository: PostRepository()),
+                  ),
+                ],
                 child: FollowingTab(),
               ),
               // For You Tab Content

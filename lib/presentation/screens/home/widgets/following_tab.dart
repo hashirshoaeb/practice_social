@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practice_social/domain/models/post.dart';
 import 'package:practice_social/domain/post_repository.dart';
 import 'package:practice_social/presentation/cubit/following_tab_control_cubit.dart';
+import 'package:practice_social/presentation/cubit/post_cubit.dart';
 import 'package:practice_social/presentation/screens/home/widgets/post.dart';
 import 'package:practice_social/presentation/screens/home/widgets/scroll_up_gesture_recognizer.dart';
 import 'package:practice_social/presentation/screens/home/widgets/scrollable_header_delegate.dart';
@@ -17,17 +18,10 @@ class FollowingTab extends StatefulWidget {
 
 class _FollowingTabState extends State<FollowingTab>
     with AutomaticKeepAliveClientMixin {
-  final postRepository = PostRepository();
-  List<PostModel> posts = [];
-
   @override
   void initState() {
     super.initState();
-    postRepository.getPosts().then((value) {
-      setState(() {
-        posts = value;
-      });
-    });
+    context.read<PostCubit>().getPosts();
   }
 
   @override
@@ -58,46 +52,64 @@ class _FollowingTabState extends State<FollowingTab>
       },
       body: Stack(
         children: [
-          GestureDetector(
-            onVerticalDragStart: (details) {},
-            onTapDown: (details) {
-              // context.read<FollowingTabControlCubit>().onPageTappedDown();
-            },
-            child: ExtentsPageView.extents(
-              physics: const PageScrollPhysics(),
-              controller:
-                  context.read<FollowingTabControlCubit>().pageController,
-              extents: 1,
-              onPageChanged: (index) {},
-              itemCount: posts.length,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return BlocBuilder<
-                  FollowingTabControlCubit,
-                  FollowingTabControlState
-                >(
-                  builder: (context, state) {
-                    final shouldScrollUpAbsorb = !state.isStoryWidgetVisible;
-                    final shouldScrollDownAbsorb =
-                        !state.isFirstPage && !state.isStoryWidgetVisible;
-                    return ScrollUpGestureDetector(
-                      onScrollUpAbsorb: shouldScrollUpAbsorb,
-                      onScrollUp: () {
-                        context.read<FollowingTabControlCubit>().onScrollUp();
-                      },
-                      onScrollDownAbsorb: shouldScrollDownAbsorb,
-                      onScrollDown: () {
-                        context.read<FollowingTabControlCubit>().onScrollDown();
-                      },
-                      child: Post(
-                        key: Key(posts[index].id),
-                        post: posts[index],
-                      ),
-                    );
+          BlocBuilder<PostCubit, PostState>(
+            builder: (context, state) {
+              if (state is PostLoading) {
+                return const Center(child: FlutterLogo(size: 200));
+              }
+
+              if (state is PostLoaded) {
+                return GestureDetector(
+                  onVerticalDragStart: (details) {},
+                  onTapDown: (details) {
+                    // context.read<FollowingTabControlCubit>().onPageTappedDown();
                   },
+                  child: ExtentsPageView.extents(
+                    physics: const PageScrollPhysics(),
+                    controller:
+                        context.read<FollowingTabControlCubit>().pageController,
+                    extents: 1,
+                    onPageChanged: (index) {},
+                    itemCount: state.posts.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return BlocBuilder<
+                        FollowingTabControlCubit,
+                        FollowingTabControlState
+                      >(
+                        builder: (context, tabState) {
+                          final shouldScrollUpAbsorb =
+                              !tabState.isStoryWidgetVisible;
+                          final shouldScrollDownAbsorb =
+                              !tabState.isFirstPage &&
+                              !tabState.isStoryWidgetVisible;
+                          return ScrollUpGestureDetector(
+                            onScrollUpAbsorb: shouldScrollUpAbsorb,
+                            onScrollUp: () {
+                              context
+                                  .read<FollowingTabControlCubit>()
+                                  .onScrollUp();
+                            },
+                            onScrollDownAbsorb: shouldScrollDownAbsorb,
+                            onScrollDown: () {
+                              context
+                                  .read<FollowingTabControlCubit>()
+                                  .onScrollDown();
+                            },
+                            child: Post(
+                              key: Key(state.posts[index].id),
+                              post: state.posts[index],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 );
-              },
-            ),
+              }
+
+              return const Center(child: Text('No posts available'));
+            },
           ),
           // Story section with expandable animation
           Positioned(
