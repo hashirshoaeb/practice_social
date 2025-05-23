@@ -59,52 +59,46 @@ class _FollowingTabState extends State<FollowingTab>
               }
 
               if (state is PostLoaded) {
-                return GestureDetector(
-                  onVerticalDragStart: (details) {},
-                  onTapDown: (details) {
-                    // context.read<FollowingTabControlCubit>().onPageTappedDown();
+                return ExtentsPageView.extents(
+                  physics: const PageScrollPhysics(),
+                  controller:
+                      context.read<FollowingTabControlCubit>().pageController,
+                  extents: 1,
+                  onPageChanged: (index) {},
+                  itemCount: state.posts.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    return BlocBuilder<
+                      FollowingTabControlCubit,
+                      FollowingTabControlState
+                    >(
+                      builder: (context, tabState) {
+                        final shouldScrollUpAbsorb =
+                            !tabState.isStoryWidgetVisible;
+                        final shouldScrollDownAbsorb =
+                            !tabState.isFirstPage &&
+                            !tabState.isStoryWidgetVisible;
+                        return ScrollUpGestureDetector(
+                          onScrollUpAbsorb: shouldScrollUpAbsorb,
+                          onScrollUp: () {
+                            context
+                                .read<FollowingTabControlCubit>()
+                                .onScrollUp();
+                          },
+                          onScrollDownAbsorb: shouldScrollDownAbsorb,
+                          onScrollDown: () {
+                            context
+                                .read<FollowingTabControlCubit>()
+                                .onScrollDown();
+                          },
+                          child: Post(
+                            key: Key(state.posts[index].id),
+                            post: state.posts[index],
+                          ),
+                        );
+                      },
+                    );
                   },
-                  child: ExtentsPageView.extents(
-                    physics: const PageScrollPhysics(),
-                    controller:
-                        context.read<FollowingTabControlCubit>().pageController,
-                    extents: 1,
-                    onPageChanged: (index) {},
-                    itemCount: state.posts.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return BlocBuilder<
-                        FollowingTabControlCubit,
-                        FollowingTabControlState
-                      >(
-                        builder: (context, tabState) {
-                          final shouldScrollUpAbsorb =
-                              !tabState.isStoryWidgetVisible;
-                          final shouldScrollDownAbsorb =
-                              !tabState.isFirstPage &&
-                              !tabState.isStoryWidgetVisible;
-                          return ScrollUpGestureDetector(
-                            onScrollUpAbsorb: shouldScrollUpAbsorb,
-                            onScrollUp: () {
-                              context
-                                  .read<FollowingTabControlCubit>()
-                                  .onScrollUp();
-                            },
-                            onScrollDownAbsorb: shouldScrollDownAbsorb,
-                            onScrollDown: () {
-                              context
-                                  .read<FollowingTabControlCubit>()
-                                  .onScrollDown();
-                            },
-                            child: Post(
-                              key: Key(state.posts[index].id),
-                              post: state.posts[index],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
                 );
               }
 
