@@ -290,10 +290,10 @@ class _PageViewState extends State<ExtentsPageView> {
                 offset: position,
                 clipBehavior: widget.clipBehavior,
                 slivers: <Widget>[
-                  SliverFillViewport(
-                    viewportFraction: _controller.viewportFraction,
+                  SliverFixedExtentList(
+                    itemExtent: MediaQuery.of(context).size.height - 80,
                     delegate: widget.childrenDelegate,
-                    padEnds: widget.padEnds,
+                    // padEnds: widget.padEnds,
                   ),
                 ],
               );
