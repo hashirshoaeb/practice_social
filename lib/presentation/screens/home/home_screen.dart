@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice_social/domain/post_repository.dart';
-import 'package:practice_social/presentation/cubit/following_tab_control_cubit.dart';
-import 'package:practice_social/presentation/cubit/post_cubit.dart';
-import 'package:practice_social/presentation/screens/home/widgets/bottom_navbar.dart';
-import 'package:practice_social/presentation/screens/home/widgets/following_tab.dart';
+import 'package:practice_social/domain/repository/post_repository.dart';
+import 'package:practice_social/presentation/cubit/following_tab_control_cubit/following_tab_control_cubit.dart';
+import 'package:practice_social/presentation/cubit/post_cubit/post_cubit.dart';
+import 'package:practice_social/presentation/screens/home/widgets/bottom_navbar/bottom_navbar.dart';
+import 'package:practice_social/presentation/screens/home/widgets/following_tab/following_tab.dart';
 import 'package:practice_social/presentation/screens/home/widgets/for_you_tab.dart';
 import 'widgets/appbar.dart';
 

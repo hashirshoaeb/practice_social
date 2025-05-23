@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'following_tab.dart';
 
 /// Delegate for creating scrollable headers with custom behavior
 /// Handles header sizing and scroll effects

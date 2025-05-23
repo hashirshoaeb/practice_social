@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated('Not in use')
 class ScrollUpGestureDetector extends StatelessWidget {
   final bool onScrollUpAbsorb;
   final VoidCallback onScrollUp;

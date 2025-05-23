@@ -1,48 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-/// State class for FollowingTabControl
-/// Manages the visibility of story widget and current page position
-class FollowingTabControlState {
-  /// Whether the story widget is currently visible
-  final bool isStoryWidgetVisible;
-
-  /// Whether the user is on the first page of PageView
-  final bool isFirstPage;
-
-  /// Creates a new FollowingTabControlState
-  const FollowingTabControlState({
-    this.isStoryWidgetVisible = false,
-    this.isFirstPage = true,
-  });
-
-  /// Creates a copy of this state with the given fields replaced with new values
-  FollowingTabControlState copyWith({
-    bool? isStoryWidgetVisible,
-    bool? isFirstPage,
-  }) {
-    return FollowingTabControlState(
-      isStoryWidgetVisible: isStoryWidgetVisible ?? this.isStoryWidgetVisible,
-      isFirstPage: isFirstPage ?? this.isFirstPage,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is FollowingTabControlState &&
-        other.isStoryWidgetVisible == isStoryWidgetVisible &&
-        other.isFirstPage == isFirstPage;
-  }
-
-  @override
-  int get hashCode => isStoryWidgetVisible.hashCode ^ isFirstPage.hashCode;
-
-  @override
-  String toString() {
-    return 'FollowingTabControlState(isStoryWidgetVisible: $isStoryWidgetVisible, isFirstPage: $isFirstPage)';
-  }
-}
+import 'package:practice_social/presentation/cubit/following_tab_control_cubit/following_tab_control_state.dart';
 
 /// Cubit responsible for managing the following tab's UI state and interactions
 /// Handles story widget animations and page navigation
