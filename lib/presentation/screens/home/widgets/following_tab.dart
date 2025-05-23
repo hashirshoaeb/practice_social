@@ -10,6 +10,8 @@ import 'package:practice_social/presentation/screens/home/widgets/scrollable_hea
 import 'package:practice_social/presentation/screens/home/widgets/story_list.dart';
 import 'package:practice_social/presentation/shared_widgets/extent_page_view.dart';
 
+/// Main following tab widget
+/// Displays stories and posts with scrollable content
 class FollowingTab extends StatefulWidget {
   const FollowingTab({super.key});
   @override
@@ -21,6 +23,7 @@ class _FollowingTabState extends State<FollowingTab>
   @override
   void initState() {
     super.initState();
+    // Load posts when tab is initialized
     context.read<PostCubit>().getPosts();
   }
 
@@ -35,6 +38,7 @@ class _FollowingTabState extends State<FollowingTab>
       controller: context.read<FollowingTabControlCubit>().scrollController,
       headerSliverBuilder: (context, innerBoxScrolled) {
         return [
+          // Story section header
           SliverPersistentHeader(
             pinned: true,
             floating: true,
@@ -52,6 +56,7 @@ class _FollowingTabState extends State<FollowingTab>
       },
       body: Stack(
         children: [
+          // Post content
           BlocBuilder<PostCubit, PostState>(
             builder: (context, state) {
               if (state is PostLoading) {
@@ -64,21 +69,13 @@ class _FollowingTabState extends State<FollowingTab>
                   FollowingTabControlState
                 >(
                   builder: (context, tabState) {
-                    // final shouldScrollUpAbsorb = !tabState.isStoryWidgetVisible;
-                    // final shouldScrollDownAbsorb =
-                    // !tabState.isFirstPage && !tabState.isStoryWidgetVisible;
                     return Listener(
                       onPointerMove: (event) {
-                        print('pointer move');
-                        print(event.delta.dy);
-                        // Scroll up
+                        // Handle scroll gestures
                         if (event.delta.dy < 0) {
-                          print('scroll up');
                           context.read<FollowingTabControlCubit>().onScrollUp();
                         }
-                        // Scroll down
                         if (event.delta.dy > 0) {
-                          print('scroll down');
                           context
                               .read<FollowingTabControlCubit>()
                               .onScrollDown();
@@ -112,7 +109,7 @@ class _FollowingTabState extends State<FollowingTab>
               return const Center(child: Text('No posts available'));
             },
           ),
-          // Story section with expandable animation
+          // Story widget toggle button
           Positioned(
             top: MediaQuery.of(context).padding.top + 62,
             left: 0,

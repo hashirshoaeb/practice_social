@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// A transparent app bar with tab navigation and action buttons
+/// Used in the home screen for switching between Following and For You content
 class TransparentAppBar extends StatelessWidget {
+  /// Controller for managing tab navigation
   final TabController tabController;
 
   const TransparentAppBar({super.key, required this.tabController});
@@ -19,7 +22,9 @@ class TransparentAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Live button
               _AppBarIcon(assetPath: 'assets/live.svg'),
+              // Tab navigation
               SizedBox(
                 width: 200,
                 child: TabBar(
@@ -34,7 +39,6 @@ class TransparentAppBar extends StatelessWidget {
                   ),
                   indicatorSize: TabBarIndicatorSize.tab,
                   labelPadding: EdgeInsets.zero,
-                  // dividerColor: Colors.transparent,
                   dividerHeight: 0,
                   unselectedLabelColor: Colors.white.withAlpha(
                     (0.5 * 255).toInt(),
@@ -53,6 +57,7 @@ class TransparentAppBar extends StatelessWidget {
                   ],
                 ),
               ),
+              // Search button
               _AppBarIcon(assetPath: 'assets/search.svg'),
             ],
           ),
@@ -62,7 +67,10 @@ class TransparentAppBar extends StatelessWidget {
   }
 }
 
+/// Custom tab widget for the app bar
+/// Provides consistent styling for tab items
 class _AppBarTab extends StatelessWidget {
+  /// Text to display in the tab
   final String text;
 
   const _AppBarTab({required this.text});
@@ -73,8 +81,13 @@ class _AppBarTab extends StatelessWidget {
   }
 }
 
+/// Custom icon widget for the app bar
+/// Handles SVG icons with tap functionality
 class _AppBarIcon extends StatelessWidget {
+  /// Path to the SVG asset
   final String assetPath;
+
+  /// Optional callback for tap events
   final VoidCallback? onTap;
 
   const _AppBarIcon({required this.assetPath, this.onTap});

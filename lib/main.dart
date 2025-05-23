@@ -4,11 +4,14 @@ import 'package:flutter/services.dart';
 import 'presentation/screens/home/home_screen.dart';
 import 'presentation/themes/app_theme.dart';
 
+/// Application entry point
+/// Configures system settings and initializes the app
 void main() {
+  // Enable gesture debugging in debug mode
   debugPrintGestureArenaDiagnostics = true;
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set preferred orientations
+  // Lock app orientation to portrait mode only
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -27,6 +30,8 @@ void main() {
   runApp(const MyApp());
 }
 
+/// Root widget of the application
+/// Sets up the MaterialApp with custom theme and initial route
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

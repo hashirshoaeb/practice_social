@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Main For You tab widget
+/// Currently displays a placeholder feed with colored containers
 class ForYouTab extends StatefulWidget {
   const ForYouTab({super.key});
   @override
@@ -17,6 +19,7 @@ class _ForYouTabState extends State<ForYouTab>
     return PageView.builder(
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
+        // Placeholder content with alternating colors
         final color = Colors.primaries[index % Colors.primaries.length];
         return SafeArea(child: Container(color: color));
       },

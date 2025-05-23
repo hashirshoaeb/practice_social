@@ -1,15 +1,22 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// State class for FollowingTabControl
+/// Manages the visibility of story widget and current page position
 class FollowingTabControlState {
+  /// Whether the story widget is currently visible
   final bool isStoryWidgetVisible;
+
+  /// Whether the user is on the first page of PageView
   final bool isFirstPage;
 
+  /// Creates a new FollowingTabControlState
   const FollowingTabControlState({
     this.isStoryWidgetVisible = false,
     this.isFirstPage = true,
   });
 
+  /// Creates a copy of this state with the given fields replaced with new values
   FollowingTabControlState copyWith({
     bool? isStoryWidgetVisible,
     bool? isFirstPage,
@@ -37,24 +44,36 @@ class FollowingTabControlState {
   }
 }
 
+/// Cubit responsible for managing the following tab's UI state and interactions
+/// Handles story widget animations and page navigation
 class FollowingTabControlCubit extends Cubit<FollowingTabControlState> {
+  /// Controller for managing scroll position
   late final ScrollController scrollController;
+
+  /// Controller for managing pageview navigation
   late final PageController pageController;
 
+  /// Height of the story widget in pixels
   double get storyWidgetHeight => 228;
 
+  /// Creates a new FollowingTabControlCubit
+  /// Initializes controllers and sets up page change listener
   FollowingTabControlCubit() : super(FollowingTabControlState()) {
     scrollController = ScrollController(initialScrollOffset: storyWidgetHeight);
     pageController = PageController();
     pageController.addListener(_onPageChange);
   }
 
+  /// Called when the story widget is tapped
+  /// Shows the story widget if it's not visible
   void onViewStoryTapped() {
     if (!state.isStoryWidgetVisible) {
       _animateStoryWidget(makeVisible: true);
     }
   }
 
+  /// Listener for page changes
+  /// Updates state based on current page position
   void _onPageChange() {
     if (pageController.page == 0.0) {
       emit(state.copyWith(isFirstPage: true));
@@ -66,7 +85,8 @@ class FollowingTabControlCubit extends Cubit<FollowingTabControlState> {
     }
   }
 
-  // Or on tap down
+  /// Called when a page is tapped down
+  /// Hides the story widget if it's visible
   void onPageTappedDown() {
     // if the story widget is visible, scroll away
     if (state.isStoryWidgetVisible) {
@@ -74,18 +94,24 @@ class FollowingTabControlCubit extends Cubit<FollowingTabControlState> {
     }
   }
 
+  /// Called when scrolling up
+  /// Hides the story widget if it's visible
   void onScrollUp() {
     if (state.isStoryWidgetVisible) {
       _animateStoryWidget(makeVisible: false);
     }
   }
 
+  /// Called when scrolling down
+  /// Shows the story widget if on first page and not visible
   void onScrollDown() {
     if (state.isFirstPage && !state.isStoryWidgetVisible) {
       _animateStoryWidget(makeVisible: true);
     }
   }
 
+  /// Animates the story widget's visibility
+  /// [makeVisible] determines whether to show or hide the widget
   void _animateStoryWidget({required bool makeVisible}) {
     scrollController.animateTo(
       makeVisible ? -storyWidgetHeight : storyWidgetHeight,

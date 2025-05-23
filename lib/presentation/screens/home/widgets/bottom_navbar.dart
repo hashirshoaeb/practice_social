@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+/// Main bottom navigation bar widget
+/// Displays navigation items with animations and notifications
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
 
@@ -9,6 +11,7 @@ class BottomNavbar extends StatefulWidget {
 }
 
 class _BottomNavbarState extends State<BottomNavbar> {
+  /// Current selected navigation index
   int _currentIndex = 0;
 
   @override
@@ -27,6 +30,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Navigation items
             _NavItem(
               icon: 'assets/home.svg',
               label: 'Home',
@@ -61,12 +65,24 @@ class _BottomNavbarState extends State<BottomNavbar> {
   }
 }
 
+/// Individual navigation item with animation and notification support
 class _NavItem extends StatefulWidget {
+  /// Icon asset path
   final String icon;
+
+  /// Label text
   final String label;
+
+  /// Whether this item is currently selected
   final bool isSelected;
+
+  /// Whether to show notification badge
   final bool hasNotification;
+
+  /// Notification count text
   final String? notificationCount;
+
+  /// Callback for tap events
   final VoidCallback onTap;
 
   const _NavItem({
@@ -84,9 +100,11 @@ class _NavItem extends StatefulWidget {
 
 class _NavItemState extends State<_NavItem>
     with SingleTickerProviderStateMixin {
+  /// Controller for scale animation
   late AnimationController _animationController;
+
+  /// Animation for scale effect
   late Animation<double> _scaleAnimation;
-  // bool _isPressed = false;
 
   @override
   void initState() {
@@ -110,19 +128,12 @@ class _NavItemState extends State<_NavItem>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) {
-        _animationController.forward();
-        // setState(() => _isPressed = true);
-      },
+      onTapDown: (_) => _animationController.forward(),
       onTapUp: (_) {
         _animationController.reverse();
-        // setState(() => _isPressed = false);
         widget.onTap();
       },
-      onTapCancel: () {
-        _animationController.reverse();
-        // setState(() => _isPressed = false);
-      },
+      onTapCancel: () => _animationController.reverse(),
       child: Column(
         children: [
           AnimatedBuilder(
@@ -136,6 +147,7 @@ class _NavItemState extends State<_NavItem>
             child: Stack(
               clipBehavior: Clip.none,
               children: [
+                // Icon
                 SvgPicture.asset(
                   widget.icon,
                   height: 28,
@@ -145,6 +157,7 @@ class _NavItemState extends State<_NavItem>
                     BlendMode.srcIn,
                   ),
                 ),
+                // Notification badge
                 if (widget.hasNotification && widget.notificationCount != null)
                   Positioned(
                     right: -10,
@@ -169,6 +182,7 @@ class _NavItemState extends State<_NavItem>
             ),
           ),
           const SizedBox(height: 5),
+          // Label
           Text(
             widget.label,
             style: TextStyle(
@@ -183,6 +197,7 @@ class _NavItemState extends State<_NavItem>
   }
 }
 
+/// Special add button with gradient background
 class _AddButton extends StatefulWidget {
   @override
   State<_AddButton> createState() => _AddButtonState();
@@ -190,9 +205,11 @@ class _AddButton extends StatefulWidget {
 
 class _AddButtonState extends State<_AddButton>
     with SingleTickerProviderStateMixin {
+  /// Controller for scale animation
   late AnimationController _animationController;
+
+  /// Animation for scale effect
   late Animation<double> _scaleAnimation;
-  // bool _isPressed = false;
 
   @override
   void initState() {
@@ -216,18 +233,9 @@ class _AddButtonState extends State<_AddButton>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) {
-        _animationController.forward();
-        // setState(() => _isPressed = true);
-      },
-      onTapUp: (_) {
-        _animationController.reverse();
-        // setState(() => _isPressed = false);
-      },
-      onTapCancel: () {
-        _animationController.reverse();
-        // setState(() => _isPressed = false);
-      },
+      onTapDown: (_) => _animationController.forward(),
+      onTapUp: (_) => _animationController.reverse(),
+      onTapCancel: () => _animationController.reverse(),
       child: Column(
         children: [
           AnimatedBuilder(

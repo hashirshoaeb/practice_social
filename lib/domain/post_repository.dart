@@ -1,13 +1,21 @@
 import 'package:practice_social/domain/models/post.dart';
 
 class PostRepository {
+  /// Base URL for placeholder images
   // https://picsum.photos/1080/1920
+
+  /// Creates a new instance of PostRepository
   const PostRepository();
 
-  final clientId = 'p9csx0w38r2uD1QfpGWX0oRnphkXnmaGbixMB11Bdyw';
-
+  /// Fetches a list of posts
+  /// Currently returns mock data with a simulated delay
+  ///
+  /// Returns a [Future] that completes with a [List] of [PostModel]
   Future<List<PostModel>> getPosts() async {
+    // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
+
+    // Return mock data
     return <PostModel>[
       PostModel(
         id: '1',

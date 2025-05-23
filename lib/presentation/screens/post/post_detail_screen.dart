@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:practice_social/domain/models/post.dart';
 
+/// Unused screen (no focus on UI, just for Hero animations purposes)
+/// Screen widget that displays detailed information about a post
+/// Includes post content, interactions, and comments
 class PostDetailScreen extends StatefulWidget {
+  /// The post to be displayed
   final PostModel post;
 
   const PostDetailScreen({super.key, required this.post});
@@ -12,6 +16,7 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
+  /// Controller for managing the comment input field
   final TextEditingController _commentController = TextEditingController();
 
   @override
@@ -26,7 +31,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          // Custom App Bar
+          // Custom App Bar with user info and actions
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -35,6 +40,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               ),
               child: Row(
                 children: [
+                  // Back button
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: const Icon(
@@ -44,6 +50,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
+                  // User avatar with hero animation
                   CircleAvatar(
                     radius: 16,
                     backgroundColor: Colors.grey,
@@ -60,6 +67,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   ),
                   const SizedBox(width: 12),
+                  // Post title with hero animation
                   Hero(
                     tag: 'POST_TITLE_${widget.post.id}',
                     child: Text(
@@ -72,6 +80,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   ),
                   const Spacer(),
+                  // Follow button
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -94,6 +103,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
+                  // Search icon
                   SvgPicture.asset(
                     'assets/search.svg',
                     height: 24,
@@ -108,13 +118,13 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
           ),
 
-          // Main Content
+          // Main scrollable content
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Post Image
+                  // Post image with hero animation
                   AspectRatio(
                     aspectRatio: 1.0,
                     child: Hero(
@@ -126,16 +136,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   ),
 
-                  // Interaction Bar
+                  // Interaction buttons (like, comment, share, save)
                   _buildInteractionBar(),
 
-                  // Caption and Content
+                  // Post details and content
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Like count
+                        // Like count display
                         Text(
                           "${widget.post.likeCount} likes",
                           style: const TextStyle(
@@ -146,7 +156,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ),
                         const SizedBox(height: 8),
 
-                        // Username and caption
+                        // Username and caption with rich text
                         RichText(
                           text: TextSpan(
                             children: [
@@ -177,14 +187,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ),
                         const SizedBox(height: 8),
 
-                        // Tags
+                        // Tags and mentions
                         const Text(
                           "@FOUNDERS TABLE @Jacques Greeff @frankgreeff",
                           style: TextStyle(color: Colors.blue, fontSize: 14),
                         ),
                         const SizedBox(height: 16),
 
-                        // Music
+                        // Music information display
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
@@ -220,14 +230,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Comments section
+                        // Comments section header
                         const Text(
                           "View all ${101} comments",
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                         const SizedBox(height: 16),
 
-                        // Timestamp
+                        // Post timestamp
                         const Text(
                           "7 weeks ago",
                           style: TextStyle(color: Colors.grey, fontSize: 12),
@@ -240,13 +250,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
           ),
 
-          // Comment Bar
+          // Comment input bar
           _buildCommentBar(),
         ],
       ),
     );
   }
 
+  /// Builds the interaction bar with like, comment, share, and save buttons
   Widget _buildInteractionBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -255,6 +266,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         children: [
           Row(
             children: [
+              // Like button
               SvgPicture.asset(
                 'assets/heart.svg',
                 height: 28,
@@ -265,6 +277,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
               ),
               const SizedBox(width: 16),
+              // Comment button
               SvgPicture.asset(
                 'assets/comment.svg',
                 height: 28,
@@ -275,6 +288,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
               ),
               const SizedBox(width: 16),
+              // Share button
               SvgPicture.asset(
                 'assets/share.svg',
                 height: 28,
@@ -286,6 +300,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               ),
             ],
           ),
+          // Save button
           SvgPicture.asset(
             'assets/save.svg',
             height: 28,
@@ -297,6 +312,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
+  /// Builds the comment input bar at the bottom of the screen
   Widget _buildCommentBar() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -308,12 +324,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       ),
       child: Row(
         children: [
+          // User avatar
           const CircleAvatar(
             radius: 16,
             backgroundColor: Colors.grey,
             child: Icon(Icons.person, color: Colors.white, size: 20),
           ),
           const SizedBox(width: 12),
+          // Comment input field
           Expanded(
             child: TextField(
               controller: _commentController,

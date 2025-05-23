@@ -3,11 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// Types of stories that can be displayed
 enum StoryType { create, live, regular }
 
+/// Main story list widget
+/// Displays horizontal scrollable list of user stories
 class StoryList extends StatelessWidget {
   StoryList({super.key});
 
+  /// List of stories to display
   final List<({String name, String imageUrl, StoryType storyType})> stories = [
     (
       name: 'Create',
@@ -68,9 +72,16 @@ class StoryList extends StatelessWidget {
   }
 }
 
+/// Individual story item widget
+/// Displays user story with loading animation
 class _StoryItem extends StatefulWidget {
+  /// Username to display
   final String name;
+
+  /// URL of the story image
   final String imageUrl;
+
+  /// Type of story (create, live, or regular)
   final StoryType storyType;
 
   const _StoryItem({
@@ -85,10 +96,19 @@ class _StoryItem extends StatefulWidget {
 
 class _StoryItemState extends State<_StoryItem>
     with SingleTickerProviderStateMixin {
+  /// Whether the story is currently loading
   bool isLoading = false;
+
+  /// Controller for loading animation
   late AnimationController _animationController;
+
+  /// Base animation for loading effect
   late Animation<double> base;
+
+  /// Reverse animation for loading effect
   late Animation<double> reverse;
+
+  /// Gap animation for loading effect
   late Animation<double> gap;
 
   @override
@@ -132,7 +152,7 @@ class _StoryItemState extends State<_StoryItem>
             Stack(
               alignment: Alignment.center,
               children: [
-                // Story border or loading animation
+                // Loading animation
                 _buildLoadingAnimation(70),
                 // Profile image
                 Container(
@@ -208,6 +228,7 @@ class _StoryItemState extends State<_StoryItem>
               ],
             ),
             const SizedBox(height: 4),
+            // Username
             Text(
               widget.name,
               style: const TextStyle(color: Colors.white, fontSize: 12),
@@ -221,6 +242,7 @@ class _StoryItemState extends State<_StoryItem>
     );
   }
 
+  /// Builds the loading animation for the story
   Widget _buildLoadingAnimation(double size) {
     List<Color> gradientColors =
         widget.storyType == StoryType.live
@@ -250,11 +272,21 @@ class _StoryItemState extends State<_StoryItem>
   }
 }
 
+/// Custom painter for story loading animation
+/// Creates a circular loading effect with gradient colors
 class StoryLoaderPainter extends CustomPainter {
+  /// Current animation value
   final double animation;
+
+  /// Colors for the gradient
   final List<Color> gradientColors;
+
+  /// Size of the gap in the loading animation
   final double gapSize;
+
+  /// Number of dashes in the loading animation
   final int dashes;
+
   StoryLoaderPainter({
     required this.animation,
     required this.gradientColors,
@@ -262,6 +294,7 @@ class StoryLoaderPainter extends CustomPainter {
     required this.dashes,
   });
 
+  /// Calculates the Y value for the loading animation curve
   double getYValue(double x) {
     if (x < 0 || x > 18) {
       throw ArgumentError('x must be between 0 and 18');
@@ -279,7 +312,6 @@ class StoryLoaderPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // final double gap = pi / 180 * gapSize;
     final double singleAngle = (pi * 2) / dashes;
 
     final Paint paint =

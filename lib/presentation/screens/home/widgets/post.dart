@@ -5,10 +5,13 @@ import 'package:lottie/lottie.dart';
 import 'package:practice_social/domain/models/post.dart';
 import 'package:practice_social/presentation/screens/post/post_detail_screen.dart';
 
+/// Main post widget
+/// Displays post content with image, interactions, and animations
 class Post extends StatefulWidget {
-  const Post({super.key, required this.post});
-
+  /// Post data to display
   final PostModel post;
+
+  const Post({super.key, required this.post});
 
   @override
   State<Post> createState() => _PostState();
@@ -20,7 +23,7 @@ class _PostState extends State<Post> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Background Image
+        // Background image with hero animation
         Hero(
           tag: 'POST_IMAGE_${widget.post.id}',
           child: Image.network(
@@ -40,7 +43,7 @@ class _PostState extends State<Post> {
             },
           ),
         ),
-        // Post Content Overlay
+        // Post content overlay
         PostContentOverlay(post: widget.post),
         // Right side interaction buttons
         // OverflowBox(
@@ -53,7 +56,10 @@ class _PostState extends State<Post> {
   }
 }
 
+/// Overlay widget for post content
+/// Displays username, caption, and music information
 class PostContentOverlay extends StatelessWidget {
+  /// Post data to display
   final PostModel post;
 
   const PostContentOverlay({super.key, required this.post});
@@ -69,7 +75,7 @@ class PostContentOverlay extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Username
+              // Username with hero animation
               Hero(
                 tag: 'POST_TITLE_${post.id}',
                 child: Text(
@@ -83,7 +89,7 @@ class PostContentOverlay extends StatelessWidget {
               ),
               const SizedBox(height: 6),
 
-              // Caption
+              // Caption with navigation
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -109,7 +115,7 @@ class PostContentOverlay extends StatelessWidget {
               ),
               const SizedBox(height: 6),
 
-              // Show translation
+              // Translation option
               Row(
                 children: [
                   SvgPicture.asset(
@@ -133,7 +139,7 @@ class PostContentOverlay extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 4),
-              // Song
+              // Music information
               Row(
                 children: [
                   SvgPicture.asset(
@@ -164,9 +170,16 @@ class PostContentOverlay extends StatelessWidget {
   }
 }
 
+/// Interactive button for post actions
+/// Displays icon and count with tap functionality
 class InteractionButton extends StatelessWidget {
+  /// Icon asset path
   final String icon;
+
+  /// Text to display
   final String text;
+
+  /// Callback for tap events
   final VoidCallback onTap;
 
   const InteractionButton({
@@ -200,7 +213,10 @@ class InteractionButton extends StatelessWidget {
   }
 }
 
+/// Overlay widget for post interactions
+/// Displays user avatar and interaction buttons
 class InteractionOverlay extends StatelessWidget {
+  /// Post data to display
   final PostModel post;
 
   const InteractionOverlay({super.key, required this.post});
@@ -216,6 +232,7 @@ class InteractionOverlay extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // User avatar with hero animation
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -237,6 +254,7 @@ class InteractionOverlay extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // Add button
                   Positioned(
                     bottom: -10,
                     left: 0,
@@ -262,6 +280,7 @@ class InteractionOverlay extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const SizedBox(height: 15),
+              // Interaction buttons
               InteractionButton(
                 icon: 'assets/heart.svg',
                 text: post.likeCount,
@@ -280,13 +299,9 @@ class InteractionOverlay extends StatelessWidget {
                 onTap: () {},
               ),
               const SizedBox(height: 15),
-              // InteractionButton(
-              //   icon: 'assets/save.svg',
-              //   text: "34k",
-              //   onTap: () {},
-              // ),
               SaveButton(),
               const SizedBox(height: 15),
+              // Music disk
               Container(
                 width: 40,
                 height: 40,
@@ -310,6 +325,7 @@ class InteractionOverlay extends StatelessWidget {
   }
 }
 
+/// Animated save button with Lottie animation
 class SaveButton extends StatefulWidget {
   const SaveButton({super.key});
 
@@ -318,7 +334,9 @@ class SaveButton extends StatefulWidget {
 }
 
 class _SaveButtonState extends State<SaveButton> with TickerProviderStateMixin {
+  /// Controller for Lottie animation
   late AnimationController _animationController;
+
   @override
   void initState() {
     super.initState();
@@ -343,7 +361,7 @@ class _SaveButtonState extends State<SaveButton> with TickerProviderStateMixin {
         } else {
           _animationController.forward();
         }
-        // Heptic feedback
+        // Haptic feedback
         HapticFeedback.lightImpact();
       },
       child: Column(
@@ -356,7 +374,6 @@ class _SaveButtonState extends State<SaveButton> with TickerProviderStateMixin {
             animate: false,
             reverse: false,
             repeat: false,
-            // colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
           ),
           const SizedBox(height: 8),
           Text(
