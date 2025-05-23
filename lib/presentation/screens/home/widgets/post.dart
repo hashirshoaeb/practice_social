@@ -41,9 +41,9 @@ class _PostState extends State<Post> {
           ),
         ),
         // Post Content Overlay
-        PostContentOverlay(post: widget.post),
+        // PostContentOverlay(post: widget.post),
         // Right side interaction buttons
-        InteractionOverlay(post: widget.post),
+        // InteractionOverlay(post: widget.post),
       ],
     );
   }
