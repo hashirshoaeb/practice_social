@@ -43,7 +43,11 @@ class _PostState extends State<Post> {
         // Post Content Overlay
         PostContentOverlay(post: widget.post),
         // Right side interaction buttons
+        // OverflowBox(
+        // maxHeight: MediaQuery.of(context).size.height - 80,
+        // child:
         InteractionOverlay(post: widget.post),
+        // ),
       ],
     );
   }

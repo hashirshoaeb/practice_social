@@ -59,52 +59,53 @@ class _FollowingTabState extends State<FollowingTab>
               }
 
               if (state is PostLoaded) {
-                return GestureDetector(
-                  onVerticalDragStart: (details) {},
-                  onTapDown: (details) {
-                    // context.read<FollowingTabControlCubit>().onPageTappedDown();
-                  },
-                  child: ExtentsPageView.extents(
-                    physics: const PageScrollPhysics(),
-                    controller:
-                        context.read<FollowingTabControlCubit>().pageController,
-                    extents: 1,
-                    onPageChanged: (index) {},
-                    itemCount: state.posts.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return BlocBuilder<
-                        FollowingTabControlCubit,
-                        FollowingTabControlState
-                      >(
-                        builder: (context, tabState) {
-                          final shouldScrollUpAbsorb =
-                              !tabState.isStoryWidgetVisible;
-                          final shouldScrollDownAbsorb =
-                              !tabState.isFirstPage &&
-                              !tabState.isStoryWidgetVisible;
-                          return ScrollUpGestureDetector(
-                            onScrollUpAbsorb: shouldScrollUpAbsorb,
-                            onScrollUp: () {
+                return BlocBuilder<
+                  FollowingTabControlCubit,
+                  FollowingTabControlState
+                >(
+                  builder: (context, tabState) {
+                    // final shouldScrollUpAbsorb = !tabState.isStoryWidgetVisible;
+                    // final shouldScrollDownAbsorb =
+                    // !tabState.isFirstPage && !tabState.isStoryWidgetVisible;
+                    return Listener(
+                      onPointerMove: (event) {
+                        print('pointer move');
+                        print(event.delta.dy);
+                        // Scroll up
+                        if (event.delta.dy < 0) {
+                          print('scroll up');
+                          context.read<FollowingTabControlCubit>().onScrollUp();
+                        }
+                        // Scroll down
+                        if (event.delta.dy > 0) {
+                          print('scroll down');
+                          context
+                              .read<FollowingTabControlCubit>()
+                              .onScrollDown();
+                        }
+                      },
+                      child: AbsorbPointer(
+                        absorbing: tabState.isStoryWidgetVisible,
+                        child: ExtentsPageView.extents(
+                          physics: const PageScrollPhysics(),
+                          controller:
                               context
                                   .read<FollowingTabControlCubit>()
-                                  .onScrollUp();
-                            },
-                            onScrollDownAbsorb: shouldScrollDownAbsorb,
-                            onScrollDown: () {
-                              context
-                                  .read<FollowingTabControlCubit>()
-                                  .onScrollDown();
-                            },
-                            child: Post(
+                                  .pageController,
+                          extents: 1,
+                          onPageChanged: (index) {},
+                          itemCount: state.posts.length,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return Post(
                               key: Key(state.posts[index].id),
                               post: state.posts[index],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 );
               }
 
